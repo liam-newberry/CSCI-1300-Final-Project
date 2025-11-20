@@ -1,4 +1,5 @@
 #include "Character.h"
+#include "EscapeColors.h"
 
 #include <iostream>
 #include <iomanip>
@@ -48,13 +49,14 @@ int Character::getDiscoveryPoints() const {
 
 void Character::print() const {
     // print all the stats to the left and aling them with printHeaders
-    cout << left;
-    cout << setw(15) << name;
-    cout << setw(12) << experience;
-    cout << setw(12) << accuracy;
-    cout << setw(12) << efficiency;
-    cout << setw(12) << insight;
-    cout << setw(12) << discoveryPoints;
+    // the alignment is from the headers +9 due to the EscapeColors
+    cout << left; 
+    cout << setw(24) << EscapeColors::colorString(name, EscapeColors::CYAN);
+    cout << setw(21) << EscapeColors::colorString(experience, EscapeColors::YELLOW);
+    cout << setw(21) << EscapeColors::colorString(accuracy, EscapeColors::YELLOW);
+    cout << setw(21) << EscapeColors::colorString(efficiency, EscapeColors::YELLOW);
+    cout << setw(21) << EscapeColors::colorString(insight, EscapeColors::YELLOW);
+    cout << setw(21) << EscapeColors::colorString(discoveryPoints, EscapeColors::YELLOW);
 }
 
 vector<Character> make_characters() {

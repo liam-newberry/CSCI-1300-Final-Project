@@ -9,7 +9,9 @@ using namespace std;
 
 struct Player {
     string name;
+    string color;
     Character character;
+    string path;
 };
 
 #endif
