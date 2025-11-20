@@ -47,6 +47,26 @@ int Character::getDiscoveryPoints() const {
     return discoveryPoints;
 }
 
+void Character::changeExperience(int amount) {
+    experience += amount;
+}
+
+void Character::changeAccuracy(int amount) {
+    accuracy += amount;
+}
+
+void Character::changeEfficiency(int amount) {
+    efficiency += amount;
+}
+
+void Character::changeInsight(int amount) {
+    insight += amount;
+}
+
+void Character::changeDiscoveryPoints(int amount) {
+    discoveryPoints += amount;
+}
+
 void Character::print() const {
     // print all the stats to the left and aling them with printHeaders
     // the alignment is from the headers +9 due to the EscapeColors
@@ -59,13 +79,13 @@ void Character::print() const {
     cout << setw(21) << EscapeColors::colorString(discoveryPoints, EscapeColors::YELLOW);
 }
 
-vector<Character> make_characters() {
+vector<Character> makeCharacters() {
     // stats for each character
-    int leoStats[5]      = {5, 500, 500, 1000, 20000};
-    int helixStats[5]    = {8, 900, 600, 600, 20000};
-    int pantheraStats[5] = {12, 900, 700, 500, 20000};
-    int adenineStats[5]  = {7, 600, 500, 900, 20000};
-    int kmerStats[5]     = {18, 1000, 500, 500, 20000};
+    int leoStats[5]      = {5,  500,  500, 1000, 20000};
+    int helixStats[5]    = {8,  900,  600, 600,  20000};
+    int pantheraStats[5] = {12, 900,  700, 500,  20000};
+    int adenineStats[5]  = {7,  600,  500, 900,  20000};
+    int kmerStats[5]     = {18, 1000, 500, 500,  20000};
 
     // make vector with each character
     vector<Character> characters = {

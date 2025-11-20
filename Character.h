@@ -17,6 +17,11 @@ public:
     int getEfficiency() const;
     int getInsight() const;
     int getDiscoveryPoints() const;
+    void changeExperience(int amount);
+    void changeAccuracy(int amount);
+    void changeEfficiency(int amount);
+    void changeInsight(int amount);
+    void changeDiscoveryPoints(int amount);
     void print() const;
 
 private:
@@ -24,7 +29,7 @@ private:
     int experience, accuracy, efficiency, insight, discoveryPoints;
 };
 
-vector<Character> make_characters();
+vector<Character> makeCharacters();
 
 void printHeaders();
 

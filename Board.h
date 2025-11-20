@@ -29,6 +29,7 @@ class Board {
         void displayTrack(int player_index);
         void displayBoard();
         bool movePlayer(int player_index);
+        bool movePlayer(int player_index, int squares);
         // Recall we can use const for getter functions
         int getPlayerPosition(int player_index) const;
 };

@@ -153,6 +153,16 @@ bool Board::movePlayer(int player_index) {
     return _player_position[player_index] == _BOARD_SIZE - 1;
 }
 
+bool Board::movePlayer(int player_index, int squares) {
+    bool reachedEnd;
+
+    for (int i = 0; i < squares; i++) {
+        reachedEnd = movePlayer(player_index);
+    }
+
+    return reachedEnd;
+}
+
 int Board::getPlayerPosition(int player_index) const {
     if (player_index >= 0 && player_index <= _player_count) {
         return _player_position[player_index];

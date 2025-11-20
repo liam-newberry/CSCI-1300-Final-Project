@@ -4,6 +4,7 @@
 #include <string>
 
 #include "Character.h"
+#include "Advisor.h"
 
 using namespace std;
 
@@ -12,6 +13,7 @@ struct Player {
     string color;
     Character character;
     string path;
+    Advisor advisor;
 };
 
 #endif
