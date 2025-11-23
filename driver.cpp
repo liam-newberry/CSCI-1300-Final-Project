@@ -6,6 +6,8 @@
 // #include "Character.h"
 #include "Player.h"
 #include "Setup.h"
+#include "GameLoop.h"
+#include "HelperMethods.h"
 // #include "EscapeColors.h"
 
 using namespace std;
@@ -14,6 +16,10 @@ using namespace std;
 int main() {
     Player player1, player2;
     intialize_players(player1, player2);
+
+    HelperMethods::clearPrintHeading("Game Begin");
+    GameLoop loop(player1, player2);
+    loop.runLoop();
 
     // Board b;
     // b.displayBoard();

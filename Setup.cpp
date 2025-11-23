@@ -4,6 +4,7 @@
 
 #include "Player.h"
 #include "EscapeColors.h"
+#include "HelperMethods.h"
 
 using namespace std;
 
@@ -12,25 +13,15 @@ void getPlayerNames(Player& player1, Player& player2) {
     cout << "Player 1 name: ";
     cin >> player1.name;
 
-    cout << "Player 2 name: ";
+    cout << endl << "Player 2 name: ";
     cin >> player2.name;
-}
-
-// check if character input is number between 1 and 5
-bool isValidIntChoice(string s, int low, int high) {
-    try {
-        int x = stoi(s); // convert the string to int
-        return x >= low && x <= high; // return input is in range of options
-    } catch (const invalid_argument) { // if non number input to stoi
-        return false;
-    }
 }
 
 // get the player's color; used every time they're name is displayed
 void getPlayerColor(Player& player, string taken) {
     string input;
 
-    cout << "\n\n\n";
+    cout << endl;
 
     while (true) { // this is used to make the input safe if the input is invalid
         cout << player.name << ", what color would you like?" << endl;
@@ -38,10 +29,10 @@ void getPlayerColor(Player& player, string taken) {
         for (int i = 0; i < 7; i++) {
             cout << EscapeColors::colorString(i + 1, EscapeColors::COLORS[i]) << ", ";
         }
-        cout << EscapeColors::colorString(8, EscapeColors::COLORS[7]) << endl;
+        cout << EscapeColors::colorString(8, EscapeColors::COLORS[7]) << endl << endl;
         cin >> input;
 
-        if (isValidIntChoice(input, 1, 8)) {
+        if (HelperMethods::isValidIntChoice(input, 1, 8)) {
             player.color = EscapeColors::COLORS[stoi(input) - 1];
             if (player.color == taken) {
                 cout << EscapeColors::colorString("Color already taken", EscapeColors::RED) 
@@ -51,8 +42,7 @@ void getPlayerColor(Player& player, string taken) {
                 break;
             }
         } else {
-            cout << EscapeColors::colorString("Invalid input", EscapeColors::RED) 
-                 << endl << endl; // This makes the error code red
+            HelperMethods::invalidInput();
         }
     }
 }
@@ -64,8 +54,6 @@ void getCharacterChoice(Player& player) {
     string input;
     int intInput;
 
-    cout << "\n\n\n";
-
     while (true) { // this is used to make the input safe if the input is invalid
         printHeaders();
         for (int i = 0; i < characters.size(); i++) {
@@ -76,20 +64,18 @@ void getCharacterChoice(Player& player) {
         cout << endl << player.name << ", pick your character 1-5: ";
         cin >> input;
 
-        if (isValidIntChoice(input, 1, 5)) {
+        if (HelperMethods::isValidIntChoice(input, 1, 5)) {
             player.character = characters[stoi(input) - 1];
+            cout << endl;
             break;
         } else {
-            cout << EscapeColors::colorString("Invalid input", EscapeColors::RED) 
-                 << endl << endl; // This makes the error code red
+            HelperMethods::invalidInput();
         }
     }
 }
 
 void getPathChoice(Player& player) {
     string input;
-
-    cout << "\n\n\n";
 
     while (true) { // this is used to make the input safe if the input is invalid
         cout << "Would you like to do a " 
@@ -104,12 +90,12 @@ void getPathChoice(Player& player) {
         cout << endl << player.name << ", pick your path 1 or 2: ";
         cin >> input;
 
-        if (isValidIntChoice(input, 1, 2)) {
+        if (HelperMethods::isValidIntChoice(input, 1, 2)) {
             player.path = input == "1" ? "Training Fellowship" : "Direct Lab Assignment";
+            cout << endl;
             break;
         } else {
-            cout << EscapeColors::colorString("Invalid input", EscapeColors::RED) 
-                 << endl << endl; // This makes the error code red
+            HelperMethods::invalidInput();
         }
     }
 }
@@ -120,8 +106,6 @@ void getAdvisorChoice(Player& player) {
     string input;
     int intInput;
 
-    cout << "\n\n\n";
-
     while (true) { // this is used to make the input safe if the input is invalid
         for (int i = 0; i < advisors.size(); i++) {
             cout << left << setw(25) << EscapeColors::colorString(advisors[i].name, EscapeColors::MAGENTA) + ": "
@@ -131,12 +115,12 @@ void getAdvisorChoice(Player& player) {
         cout << endl << player.name << ", pick your advisor 1-5: ";
         cin >> input;
 
-        if (isValidIntChoice(input, 1, 5)) {
+        if (HelperMethods::isValidIntChoice(input, 1, 5)) {
             player.advisor = advisors[stoi(input) - 1];
+            cout << endl;
             break;
         } else {
-            cout << EscapeColors::colorString("Invalid input", EscapeColors::RED) 
-                 << endl << endl; // This makes the error code red
+            HelperMethods::invalidInput();
         }
     }
 }
@@ -159,17 +143,24 @@ void evaluatePathChoice(Player& player) {
 
 // set player names and characters
 void intialize_players(Player& player1, Player& player2) {
+    HelperMethods::clearPrintHeading("Names");
     getPlayerNames(player1, player2);
 
+    HelperMethods::clearPrintHeading("Colors");
     getPlayerColor(player1, "");
     getPlayerColor(player2, player1.color);
-
+ 
+    HelperMethods::clearPrintHeading("Characters");
     getCharacterChoice(player1);
     getCharacterChoice(player2);
 
+    HelperMethods::clearPrintHeading("Paths");
     getPathChoice(player1);
     getPathChoice(player2);
 
+    if (player1.path == "Training Fellowship" || player2.path == "Training Fellowship") {
+        HelperMethods::clearPrintHeading("Advisors");
+    }
     evaluatePathChoice(player1);
     evaluatePathChoice(player2);
 }
