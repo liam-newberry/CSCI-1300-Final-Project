@@ -1,5 +1,6 @@
 // Source file calling the header file
 #include "Board.h"
+#include "HelperMethods.h"
 // Recall we use this preprocessor directive for rand() and srand()
 #include <cstdlib>
 // Similarly, we use this one for time() (The seed for random)
@@ -137,12 +138,12 @@ void Board::displayTrack(int player_index) {
 
 void Board::displayBoard() {
     // visually clear terminal
-    system("clear");
+    HelperMethods::clearTerminal();
 
     displayTrack(0);
     cout << endl;
     displayTrack(1);
-    cout << endl << endl;
+    cout << endl;
 }
 
 bool Board::movePlayer(int player_index) {

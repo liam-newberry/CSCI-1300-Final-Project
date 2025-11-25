@@ -21,8 +21,6 @@ void getPlayerNames(Player& player1, Player& player2) {
 void getPlayerColor(Player& player, string taken) {
     string input;
 
-    cout << endl;
-
     while (true) { // this is used to make the input safe if the input is invalid
         cout << player.name << ", what color would you like?" << endl;
 
@@ -39,6 +37,7 @@ void getPlayerColor(Player& player, string taken) {
                  << endl << endl; // This makes the error code red
             } else {
                 player.name = EscapeColors::colorString(player.name, player.color);
+                cout << endl;
                 break;
             }
         } else {

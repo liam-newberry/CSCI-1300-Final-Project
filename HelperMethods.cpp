@@ -17,7 +17,8 @@ bool HelperMethods::isValidIntChoice(string s, int low, int high) {
 }
 
 void HelperMethods::invalidInput() { 
-    cout << EscapeColors::colorString("Invalid input", EscapeColors::RED) 
+    cout << endl
+         << EscapeColors::colorString("Invalid input", EscapeColors::RED) 
          << endl << endl; // This makes the error code red
 }
 

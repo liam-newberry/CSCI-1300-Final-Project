@@ -12,7 +12,7 @@ GameLoop::GameLoop(Player& p1, Player& p2) : player1(p1), player2(p2) {
 }
 
 void GameLoop::runLoop() {
-    while (board.getPlayerPosition(0) < 52 || board.getPlayerPosition(1) < 52) {
+    while (board.getPlayerPosition(0) < 51 || board.getPlayerPosition(1) < 51) {
         evaluateMenuChoice(getMenuChoice());
     }
 }
@@ -25,13 +25,13 @@ int GameLoop::getMenuChoice() {
     string input;
 
     while (true) { 
-        cout << endl << "Check Player Progress: Review Discover Points or Review Trait stats."
-             << endl << "Review Character: Check your character name and experience."
-             << endl << "Check Position: Display board to view current position."
-             << endl << "Move Forward: Access this option to spin the virtual spinner.";
+        cout <<         "Check Player Progress: Review Discover Points or Review Trait stats"
+             << endl << "Review Character: Check your character name and experience"
+             << endl << "Check Position: Display board to view current position"
+             << endl << "Move Forward: Access this option to spin the virtual spinner";
         if (numChoices == 5) {
             cout << endl 
-                 << "Review your Advisor: Display the advisor’s abilities or Use the abilities for the challenge.";
+                 << "Review your Advisor: Display the advisor’s abilities or Use the abilities for the challenge";
         }
 
         cout << endl << endl 
@@ -39,7 +39,7 @@ int GameLoop::getMenuChoice() {
         cin >> input;
 
         if (HelperMethods::isValidIntChoice(input, 1, numChoices)) {
-            cout << "\n\n\n";
+            cout << endl;
             return stoi(input);
         } else {
             HelperMethods::invalidInput();
@@ -53,16 +53,14 @@ int GameLoop::getPlayerProgressChoice() {
     string input;
 
     while (true) { 
-        cout << "\n\n\n";
+        cout <<         "Review Discover Points"
+             << endl << "Review Trait stats";
 
-        cout << endl << "Review Discover Points."
-             << endl << "Review Trait stats.";
-
-        cout << player.name << ", what is your choice 1-2? ";
+        cout << endl << endl << player.name << ", what is your choice 1-2? ";
         cin >> input;
 
         if (HelperMethods::isValidIntChoice(input, 1, 2)) {
-            cout << "\n\n\n";
+            cout << endl;
             return stoi(input);
         } else {
             HelperMethods::invalidInput();
@@ -76,16 +74,14 @@ int GameLoop::getReviewAdvisorChoice() {
     string input;
 
     while (true) { 
-        cout << "\n\n\n";
-
-        cout << endl << "Display the advisor’s abilities"
-             << endl << "Use the abilities for the challenge.";
+        cout <<         "Display the advisor’s abilities"
+             << endl << "Use the abilities for the challenge";
 
         cout << player.name << ", what is your choice 1-2? ";
         cin >> input;
 
         if (HelperMethods::isValidIntChoice(input, 1, 2)) {
-            cout << "\n\n\n";
+            cout << endl;
             return stoi(input);
         } else {
             HelperMethods::invalidInput();
@@ -126,9 +122,9 @@ void GameLoop::reviewDiscoverPoints() {
 void GameLoop::reviewTraitStats() {
     Player& player = getCurrentPlayer();
 
-    cout << "Experience: " << player.character.getExperience()
-         << "Accuracy:   " << player.character.getAccuracy()
-         << "Efficiency: " << player.character.getEfficiency()
+    cout << "Experience: " << player.character.getExperience() << endl
+         << "Accuracy:   " << player.character.getAccuracy() << endl
+         << "Efficiency: " << player.character.getEfficiency() << endl
          << "Insight:    " << player.character.getInsight()
          << endl << endl;
 }
@@ -168,13 +164,15 @@ void GameLoop::moveForward() {
         forward =  51 - board.getPlayerPosition(turn);
     }
 
-    cout << "You rolled a " 
-         << EscapeColors::colorString(roll, EscapeColors::GREEN)
-         << "!" << endl;
+    HelperMethods::clearTerminal();
 
     board.movePlayer(turn, forward);
 
     board.displayBoard();
+
+    cout << "You rolled a " 
+         << EscapeColors::colorString(roll, EscapeColors::GREEN)
+         << "!" << endl << endl;
 
     changeTurn();
 }
@@ -188,10 +186,10 @@ Player& GameLoop::getCurrentPlayer() {
 }
 
 void GameLoop::changeTurn() {
-    if (board.getPlayerPosition(0) >= 52) {
+    if (board.getPlayerPosition(0) == 51) {
         turn = 1;
         return;
-    } else if (board.getPlayerPosition(1) >= 52) {
+    } else if (board.getPlayerPosition(1) == 51) {
         turn = 0;
         return;
     }
