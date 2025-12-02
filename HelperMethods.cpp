@@ -106,16 +106,6 @@ vector<vector<string>> HelperMethods::getRiddles() {
     return riddles;
 }
 
-// print a certain color for each nucleotide
-void HelperMethods::printNeucleotide(char c) {
-    switch (c) {
-        case 'A': cout << EscapeColors::colorString("A", EscapeColors::GREEN); break;
-        case 'C': cout << EscapeColors::colorString("C", EscapeColors::BLUE); break;
-        case 'G': cout << EscapeColors::colorString("G", EscapeColors::YELLOW); break;
-        case 'T': cout << EscapeColors::colorString("T", EscapeColors::RED); break;
-    }
-}
-
 // returns if Advisor in a vector of Advisors
 bool HelperMethods::inAdvisorVector(Advisor advisor, vector<Advisor> advisors) {
     for (int i = 0; i < advisors.size(); i++) {
@@ -134,6 +124,14 @@ bool HelperMethods::stringCompare(string s1, string s2) {
     s2.erase(remove(s2.begin(), s2.end(), '\r'), s2.end());
 
     return s1 == s2;
+}
+
+// makes percentage and rounds it
+int HelperMethods::makeWholePercent(double d) {
+    d *= 100;
+    d += 0.5;
+
+    return int(d);
 }
 
 // sorts a 2D vector of scores

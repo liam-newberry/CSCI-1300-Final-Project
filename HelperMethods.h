@@ -25,11 +25,10 @@ public:
     static vector<Event> getEvents();
     static vector<vector<string>> getRiddles();
 
-    static void printNeucleotide(char c);
-
     static bool inAdvisorVector(Advisor advisor, vector<Advisor> advisors);
     
     static bool stringCompare(string s1, string s2);
+    static int makeWholePercent(double d);
 
     static void sortScores(vector<vector<string>>& scores);
     static vector<vector<string>> getScores();

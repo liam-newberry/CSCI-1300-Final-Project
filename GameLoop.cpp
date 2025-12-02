@@ -279,41 +279,15 @@ void GameLoop::rolledGreen() {
 }
 
 void GameLoop::rolledBlue() {
-    int strand_length = HelperMethods::randomInt(8,12);
-
-    string strand1 = "";
-
-    for (int i = 0; i < strand_length; i++) {
-        switch (HelperMethods::randomInt(1,4)) {
-            case 1: strand1 += "A"; break;
-            case 2: strand1 += "C"; break;
-            case 3: strand1 += "G"; break;
-            case 4: strand1 += "T"; break;
-        }
-    }
-
-    string strand2 = strand1;
-
-    for (int i = 0; i < strand_length; i++) {
-        if (HelperMethods::randomInt(1,3) == 1) {
-            switch (HelperMethods::randomInt(1,4)) {
-                case 1: strand2[i] = 'A'; break;
-                case 2: strand2[i] = 'C'; break;
-                case 3: strand2[i] = 'G'; break;
-                case 4: strand2[i] = 'T'; break;
-            }
-        }
-    }
+    string strand1 = DNA::makeInputStrand();
+    string strand2 = DNA::makeTargetStrand(strand1, false);
+    
     cout << "Strand A: ";
-    for (int i = 0; i < strand_length; i++) {
-        HelperMethods::printNeucleotide(strand1[i]);
-        cout << " ";
-    }
-    cout << endl << "Strand B: ";
-    for (int i = 0; i < strand_length; i++) {
-        HelperMethods::printNeucleotide(strand2[i]);
-        cout << " ";
-    }
+    DNA::printStrand(strand1);
+    cout << endl;
+
+    cout << "Strand B: ";
+    DNA::printStrand(strand2);
     cout << endl << endl;
 
     string input;
@@ -330,13 +304,14 @@ void GameLoop::rolledBlue() {
         }
     }
 
-    if (stoi(input) == int(DNA::strandSimilarity(strand1, strand2) * 100)) {
+    if (stoi(input) == HelperMethods::makeWholePercent(DNA::strandSimilarity(strand1, strand2))) {
         cout << EscapeColors::colorString("Correct! +2000 Discovery Points", EscapeColors::GREEN)
              << endl << endl;
         getCurrentPlayer().character.changeDiscoveryPoints(2000); 
     } else {
         cout << "The answer is "
-             << EscapeColors::colorString(int(DNA::strandSimilarity(strand1, strand2) * 100), EscapeColors::YELLOW)
+             << EscapeColors::colorString(HelperMethods::makeWholePercent(DNA::strandSimilarity(strand1, strand2)), 
+                                                                          EscapeColors::YELLOW)
              << endl << endl;
 
         cout << EscapeColors::colorString("Incorrect! -1000 Discovery Points", EscapeColors::RED)
@@ -346,11 +321,87 @@ void GameLoop::rolledBlue() {
 }
 
 void GameLoop::rolledPink() {
+    string strand1 = DNA::makeInputStrand();
+    string strand2 = DNA::makeTargetStrand(strand1, true);
 
+    cout << "Strand A: ";
+    DNA::printStrand(strand1);
+    cout << endl;
+
+    cout << "Strand B: ";
+    DNA::printStrand(strand2);
+    cout << endl << endl;
+
+    string input;
+
+    while (true) {
+        cout << "What percent (round to whole number) of the strands match in the best fit (ex. 50 if half match)? ";
+        cin >> input;
+
+        if (HelperMethods::isValidIntChoice(input, 0, 100)) {
+            cout << endl;
+            break;
+        } else {
+            HelperMethods::invalidInput();
+        }
+    } 
+
+    if (stoi(input) == HelperMethods::makeWholePercent(DNA::strandSimilarity(strand1, strand2))) {
+        cout << EscapeColors::colorString("Correct! +5000 Discovery Points", EscapeColors::GREEN)
+             << endl << endl;
+        getCurrentPlayer().character.changeDiscoveryPoints(5000); 
+    } else {
+        cout << "The answer is "
+             << EscapeColors::colorString(HelperMethods::makeWholePercent(DNA::strandSimilarity(strand1, strand2)), 
+                                                                          EscapeColors::YELLOW)
+             << endl << endl;
+
+        cout << EscapeColors::colorString("Incorrect! -2500 Discovery Points", EscapeColors::RED)
+             << endl << endl;
+        getCurrentPlayer().character.changeDiscoveryPoints(-2500);
+    }
 }
 
 void GameLoop::rolledBrown() {
+    cout << "Please transcribe the following DNA sequence into RNA by replacing every ";
+    DNA::printNeucleotide('T');
+    cout << " with a ";
+    DNA::printNeucleotide('U');
+    cout << endl 
+         << EscapeColors::colorString("DO NOT", EscapeColors::RED)
+         << " use spaces!" << endl << endl;
 
+    string strand1 = DNA::makeInputStrand();
+
+    cout << "DNA sequence: ";
+    DNA::printStrand(strand1);
+    cout << endl;
+       
+    cout << "RNA sequence: "; 
+    string input;
+    cin >> input;
+    cout << endl;
+
+    string strand2 = "";
+    for (int i = 0; i < input.size(); i++) {
+        if (input[i] != ' ') {
+            strand2 += input[i];
+        }
+    }
+
+    if (DNA::transcribeDNAtoRNA(strand1) == strand2) {
+        cout << EscapeColors::colorString("Correct! +2000 Discovery Points", EscapeColors::GREEN)
+             << endl << endl;
+        getCurrentPlayer().character.changeDiscoveryPoints(2000); 
+    } else {
+        cout << "The answer is ";
+        DNA::printStrand(DNA::transcribeDNAtoRNA(strand1));
+        cout << endl << endl;
+
+        cout << EscapeColors::colorString("Incorrect! -1000 Discovery Points", EscapeColors::RED)
+             << endl << endl;
+        getCurrentPlayer().character.changeDiscoveryPoints(-1000);
+    }
 }
 
 void GameLoop::rolledRed() {

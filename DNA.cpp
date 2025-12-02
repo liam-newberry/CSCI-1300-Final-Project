@@ -28,14 +28,14 @@ double DNA::strandSimilarity(string strand1, string strand2) {
     return (count * 1.0) / strand1.size();
 }
 
-void DNA::transcribeDNAtoRNA(string strand) {
+string DNA::transcribeDNAtoRNA(string strand) {
     for (int i = 0; i < strand.size(); i++) {
         if (strand[i] == 'T') {
             strand[i] = 'U';
         }
     }
 
-    cout << strand << endl;
+    return strand;
 }
 
 void DNA::identifyMutations(string input_strand, string target_strand) {
@@ -46,7 +46,7 @@ void DNA::identifyMutations(string input_strand, string target_strand) {
         if (target_strand[i] == '_') { // deletion
             cout << EscapeColors::colorString("Deletion    ", EscapeColors::RED)
                  << " at position " << i + 1 << ": " << (i <= 9 ? " " : "");
-            HelperMethods::printNeucleotide(input_strand[i]);
+            printNeucleotide(input_strand[i]);
             cout << " is deleted in the target strand" << endl;
 
         } else if (input_strand[i] != target_strand[i]) {
@@ -54,21 +54,78 @@ void DNA::identifyMutations(string input_strand, string target_strand) {
                 (i <= target_strand.size() - 2 && target_strand[i + 1] == '_')) { // insertion
                     cout << EscapeColors::colorString("Insertion   ", EscapeColors::BLUE)
                          << " at position " << i + 1 << ": " << (i <= 9 ? " " : "");
-                    HelperMethods::printNeucleotide(target_strand[i]);
+                    printNeucleotide(target_strand[i]);
                     cout << " is added to the target strand" << endl;
 
             } else { // substitution
                 cout << EscapeColors::colorString("Substitution", EscapeColors::YELLOW)
                      << " at position " << i + 1 << ": " << (i <= 9 ? " " : "");
-                HelperMethods::printNeucleotide(input_strand[i]); 
+                printNeucleotide(input_strand[i]); 
                 cout << " -> ";
-                HelperMethods::printNeucleotide(target_strand[i]); 
+                printNeucleotide(target_strand[i]); 
                 cout << endl;
             }
         }
     }
 
     cout << endl;
+}
+
+string DNA::makeInputStrand() {
+    int strand_length = HelperMethods::randomInt(8,12);
+
+    string strand = "";
+
+    for (int i = 0; i < strand_length; i++) {
+        switch (HelperMethods::randomInt(1,4)) {
+            case 1: strand += "A"; break;
+            case 2: strand += "C"; break;
+            case 3: strand += "G"; break;
+            case 4: strand += "T"; break;
+        }
+    }
+
+    return strand;
+}
+
+string DNA::makeTargetStrand(string input_strand, bool shorter) {
+    for (int i = 0; i < input_strand.size(); i++) {
+        if (HelperMethods::randomInt(1,3) == 1) {
+            switch (HelperMethods::randomInt(1,4)) {
+                case 1: input_strand[i] = 'A'; break;
+                case 2: input_strand[i] = 'C'; break;
+                case 3: input_strand[i] = 'G'; break;
+                case 4: input_strand[i] = 'T'; break;
+            }
+        }
+    }
+
+    if (shorter) {
+        int left_missing =  HelperMethods::randomInt(3);
+        int right_missing = HelperMethods::randomInt(3);
+        input_strand = input_strand.substr(left_missing,
+                                           input_strand.size() - (left_missing + right_missing));
+    }
+
+    return input_strand;
+}
+
+// print a certain color for each nucleotide
+void DNA::printNeucleotide(char c) {
+    switch (c) {
+        case 'A': cout << EscapeColors::colorString("A", EscapeColors::GREEN);  break;
+        case 'C': cout << EscapeColors::colorString("C", EscapeColors::BLUE);   break;
+        case 'G': cout << EscapeColors::colorString("G", EscapeColors::YELLOW); break;
+        case 'T': cout << EscapeColors::colorString("T", EscapeColors::RED);    break;
+        case 'U': cout << EscapeColors::colorString("U", EscapeColors::CYAN);   break;
+    }
+}
+
+void DNA::printStrand(string strand) {
+    for (int i = 0; i < strand.size(); i++) {
+        printNeucleotide(strand[i]);
+        cout << " ";
+    }
 }
 
 int DNA::bestStrandMatch(string input_strand, string target_strand) {
