@@ -37,7 +37,7 @@ Board::Board(Player& p1, Player& p2) : player1(p1), player2(p2) {
     initializeBoard();
 }
 
-// =========================== Private Member Functions ===========================
+// Randomly assigns a set number of each type of tile depending on path to the track 
 void Board::initializeTiles(int player_index) {
     Tile tile;
     Player& player = player_index == 0 ? player1 : player2;
@@ -94,6 +94,7 @@ void Board::initializeTiles(int player_index) {
     }
 }
 
+// returns if a certain player is present on a specified tile
 bool Board::isPlayerOnTile(int player_index, int pos) {
     if (_player_position[player_index] == pos) {
         return true;
@@ -101,6 +102,7 @@ bool Board::isPlayerOnTile(int player_index, int pos) {
     return false;
 }
 
+// used to help print out the board using macros
 void Board::displayTile(int player_index, int pos) {
     string color = "";
     int player = isPlayerOnTile(player_index, pos);
@@ -126,13 +128,13 @@ void Board::displayTile(int player_index, int pos) {
     }
 }
 
-// =========================== Public Member Functions ===========================
-
+// creates the two tracks
 void Board::initializeBoard() {
     initializeTiles(0);
     initializeTiles(1);
 }
 
+// prints out all tiles in a specified track
 void Board::displayTrack(int player_index) {
     for (int i = 0; i < _BOARD_SIZE; i++) {
         displayTile(player_index, i);
@@ -140,6 +142,7 @@ void Board::displayTrack(int player_index) {
     cout << endl;
 }
 
+// prints a header and track for each player
 void Board::displayBoard() {
     // visually clear terminal
     HelperMethods::clearTerminal();
@@ -151,6 +154,7 @@ void Board::displayBoard() {
     cout << endl << endl;
 }
 
+// move the player forward 1 spot on the track
 bool Board::movePlayer(int player_index) {
     // Increment player position by 1
     _player_position[player_index]++;
@@ -159,6 +163,7 @@ bool Board::movePlayer(int player_index) {
     return _player_position[player_index] == _BOARD_SIZE - 1;
 }
 
+// move the player forward n spots on the track
 bool Board::movePlayer(int player_index, int squares) {
     bool reachedEnd;
 
@@ -169,6 +174,7 @@ bool Board::movePlayer(int player_index, int squares) {
     return reachedEnd;
 }
 
+// return the tile the player is on
 int Board::getPlayerPosition(int player_index) const {
     if (player_index >= 0 && player_index <= _player_count) {
         return _player_position[player_index];
@@ -176,6 +182,7 @@ int Board::getPlayerPosition(int player_index) const {
     return -1;
 }
 
+// returns the color of the tile a player is on
 char Board::getCurrentTileColor(int player_index) const {
     return _tiles[player_index][getPlayerPosition(player_index)].color;
 }

@@ -7,6 +7,7 @@
 
 using namespace std;
 
+// Lays out some instance variables for a simple Advisor struct
 struct Advisor {
     string name;
     string description;
@@ -17,6 +18,7 @@ struct Advisor {
     Advisor(string n, string d, double neg, double pos);
 };
 
+// function to return a vector of all Advisor prototypes
 vector<Advisor> makeAdvisors();
 
 #endif

@@ -10,6 +10,7 @@
 
 using namespace std;
 
+// main loop for end game options and updating scores
 bool EndGame::runLoop(Player& player1, Player& player2) {
     configureDiscoveryPoints(player1);
     configureDiscoveryPoints(player2);
@@ -27,11 +28,13 @@ bool EndGame::runLoop(Player& player1, Player& player2) {
     }
 }
 
+// configure discovery points based on stats
 void EndGame::configureDiscoveryPoints(Player& player) {
     int total = 0;
     total += player.character.getAccuracy();
     total += player.character.getEfficiency();
-    total += (player.character.getExperience() * 100); // experience is more valuable because the number is low
+    // experience is more valuable because the number is low
+    total += (player.character.getExperience() * 100); 
     total += player.character.getInsight();
 
     total -= total % 100;
@@ -40,6 +43,7 @@ void EndGame::configureDiscoveryPoints(Player& player) {
     player.character.changeDiscoveryPoints(total);
 }
 
+// update the scores file with new scores
 void EndGame::updateScores(Player& player1, Player& player2) {
     vector<vector<string>> scores = HelperMethods::getScores();
 
@@ -55,6 +59,7 @@ void EndGame::updateScores(Player& player1, Player& player2) {
     HelperMethods::writeScores(scores);
 }
 
+// print out the heading announcing the winner and stats
 void EndGame::printWinnerHeading(Player& player1, Player& player2) {
     if (player1.character.getDiscoveryPoints() == player2.character.getDiscoveryPoints()) {
         HelperMethods::clearPrintHeading("It's a Tie!");
@@ -72,6 +77,7 @@ void EndGame::printWinnerHeading(Player& player1, Player& player2) {
          << " discovery points" << endl << endl;
 }
 
+// get the next choice from the user
 int EndGame::getNextChoice() {
     cout << "Congrats on finishing! What's your next move?" << endl << endl;
 
@@ -94,6 +100,7 @@ int EndGame::getNextChoice() {
     }
 }
 
+// display the top scores of all time
 void EndGame::displayScores() {
     cout << "Top Scores of All Time" << endl << endl;
 

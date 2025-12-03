@@ -6,8 +6,10 @@
 #include <iostream>
 #include <iomanip>
 
+// default constructor so the Player header works
 Character::Character() {}
 
+// constructor to actually initialize stats
 Character::Character(string characterName, int stats[5]) : name(characterName) {
     experience =        stats[0];
     accuracy =          stats[1];
@@ -16,6 +18,7 @@ Character::Character(string characterName, int stats[5]) : name(characterName) {
     discoveryPoints =   stats[4];
 }
 
+// another way to set all stats of a Character
 void Character::set_stats(string characterName, int stats[5]) {
     name =              characterName;
     experience =        stats[0];
@@ -25,50 +28,62 @@ void Character::set_stats(string characterName, int stats[5]) {
     discoveryPoints =   stats[4];
 }
 
+// return Character name
 string Character::getName() const {
     return name;
 }
 
+// return Character experience
 int Character::getExperience() const {
     return experience;
 }
 
+// return Character accuracy
 int Character::getAccuracy() const {
     return accuracy;
 }
 
+// return Character efficiency
 int Character::getEfficiency() const {
     return efficiency;
 }
 
+// return Character insight
 int Character::getInsight() const {
     return insight;
 }
 
+// return Character discoveryPoints
 int Character::getDiscoveryPoints() const {
     return discoveryPoints;
 }
 
+// change the Character experience by n amount
 void Character::changeExperience(int amount) {
     experience += amount;
 }
 
+// change the Character accuracy by n amount
 void Character::changeAccuracy(int amount) {
     accuracy += amount;
 }
 
+// change the Character efficiency by n amount
 void Character::changeEfficiency(int amount) {
     efficiency += amount;
 }
 
+// change the Character insight by n amount
 void Character::changeInsight(int amount) {
     insight += amount;
 }
 
+// change the Character discoveryPoints by n amount
 void Character::changeDiscoveryPoints(int amount) {
     discoveryPoints += amount;
 }
 
+// print out all Character stats
 void Character::print() const {
     // print all the stats to the left and aling them with printHeaders
     // the alignment is from the headers +9 due to the EscapeColors
@@ -81,6 +96,7 @@ void Character::print() const {
     cout << setw(21) << EscapeColors::colorString(discoveryPoints, EscapeColors::YELLOW);
 }
 
+// function to return a vector of all Character prototypes
 vector<Character> makeCharacters() {
     // stats for each character
     int leoStats[5]      = {5,  500,  500, 1000, 20000};
@@ -101,6 +117,7 @@ vector<Character> makeCharacters() {
     return characters;
 }
 
+// function to print all the headers of stats
 void printHeaders() {
     // print all the headers of stats to the left and space them out
     cout << left;

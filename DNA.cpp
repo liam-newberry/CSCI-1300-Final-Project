@@ -8,6 +8,7 @@
 
 using namespace std;
 
+// return the percent similarity between two strands
 double DNA::strandSimilarity(string strand1, string strand2) {
     if (strand1.size() != strand2.size()) {
         string smaller = strand1.size() < strand2.size() ? strand1 : strand2;
@@ -28,6 +29,7 @@ double DNA::strandSimilarity(string strand1, string strand2) {
     return (count * 1.0) / strand1.size();
 }
 
+// return the index of the best match of two strands
 int DNA::bestStrandMatch(string input_strand, string target_strand) {
     double best = strandSimilarity(input_strand.substr(0, target_strand.size()), target_strand);;
     int best_index = 0;
@@ -44,6 +46,7 @@ int DNA::bestStrandMatch(string input_strand, string target_strand) {
     return best_index;
 }
 
+// return the RNA transcribed from a DNA strand
 string DNA::transcribeDNAtoRNA(string strand) {
     for (int i = 0; i < strand.size(); i++) {
         if (strand[i] == 'T') {
@@ -54,6 +57,7 @@ string DNA::transcribeDNAtoRNA(string strand) {
     return strand;
 }
 
+// identify mutations between two strands and print them if desired
 string DNA::identifyMutations(string input_strand, string target_strand, bool print) {
     fillInTargetStrand(input_strand, target_strand);
     
@@ -101,6 +105,7 @@ string DNA::identifyMutations(string input_strand, string target_strand, bool pr
     return mutations;
 }
 
+// create a random DNA strand
 string DNA::makeInputStrand() {
     int strand_length = HelperMethods::randomInt(8,12);
 
@@ -118,6 +123,7 @@ string DNA::makeInputStrand() {
     return strand;
 }
 
+// create a target DNA strand based on an input strand
 string DNA::makeTargetStrand(string input_strand, bool shorter) {
     for (int i = 0; i < input_strand.size(); i++) {
         if (HelperMethods::randomInt(1,3) == 1) {
@@ -151,10 +157,12 @@ void DNA::printNeucleotide(char c) {
     }
 }
 
+// print out a strand with single spacing
 void DNA::printStrand(string strand) {
     printStrand(strand, " ");
 }
 
+// print out a strand with custom spacing
 void DNA::printStrand(string strand, string spacing) {
     for (int i = 0; i < strand.size(); i++) {
         printNeucleotide(strand[i]);
@@ -162,6 +170,7 @@ void DNA::printStrand(string strand, string spacing) {
     }
 }
 
+// fill in the target strand with underscores to align with the input strand
 void DNA::fillInTargetStrand(string input_strand, string& target_strand) {
     int displacement = bestStrandMatch(input_strand, target_strand);
 
