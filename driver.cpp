@@ -34,7 +34,7 @@ int main() {
     HelperMethods::clearPrintHeading("Thank you for playing!");
 
     cout << "Game written by: Liam Newberry & Lyle Stone" << endl
-         << "This work is released into the public domain, 2025.";
+         << "This work is released into the public domain, 2025." <<endl;
 
     return 0;
 }
