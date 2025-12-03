@@ -28,6 +28,22 @@ double DNA::strandSimilarity(string strand1, string strand2) {
     return (count * 1.0) / strand1.size();
 }
 
+int DNA::bestStrandMatch(string input_strand, string target_strand) {
+    double best = strandSimilarity(input_strand.substr(0, target_strand.size()), target_strand);;
+    int best_index = 0;
+
+    double similarity;
+    for (int i = 1; i <= input_strand.size() - target_strand.size(); i++) {
+        similarity = strandSimilarity(input_strand.substr(i, target_strand.size()), target_strand);
+        if (similarity > best) {
+            best = similarity;
+            best_index = i;
+        }
+    }
+
+    return best_index;
+}
+
 string DNA::transcribeDNAtoRNA(string strand) {
     for (int i = 0; i < strand.size(); i++) {
         if (strand[i] == 'T') {
@@ -38,37 +54,51 @@ string DNA::transcribeDNAtoRNA(string strand) {
     return strand;
 }
 
-void DNA::identifyMutations(string input_strand, string target_strand) {
+string DNA::identifyMutations(string input_strand, string target_strand, bool print) {
     fillInTargetStrand(input_strand, target_strand);
-    cout << input_strand << endl << target_strand << endl << endl;
     
+    string mutations = "";
+
     for (int i = 0; i < input_strand.size(); i++) {
         if (target_strand[i] == '_') { // deletion
-            cout << EscapeColors::colorString("Deletion    ", EscapeColors::RED)
-                 << " at position " << i + 1 << ": " << (i <= 9 ? " " : "");
-            printNeucleotide(input_strand[i]);
-            cout << " is deleted in the target strand" << endl;
+            if (print) {
+                cout << EscapeColors::colorString("Deletion    ", EscapeColors::RED)
+                    << " at position " << i + 1 << ": " << (i <= 9 ? " " : "");
+                printNeucleotide(input_strand[i]);
+                cout << " is deleted in the target strand" << endl;
+            }
+            mutations += "d";
 
         } else if (input_strand[i] != target_strand[i]) {
             if ((i >= 1 && target_strand[i - 1] == '_') ||
                 (i <= target_strand.size() - 2 && target_strand[i + 1] == '_')) { // insertion
-                    cout << EscapeColors::colorString("Insertion   ", EscapeColors::BLUE)
-                         << " at position " << i + 1 << ": " << (i <= 9 ? " " : "");
-                    printNeucleotide(target_strand[i]);
-                    cout << " is added to the target strand" << endl;
+                    if (print) {
+                        cout << EscapeColors::colorString("Insertion   ", EscapeColors::BLUE)
+                            << " at position " << i + 1 << ": " << (i <= 9 ? " " : "");
+                        printNeucleotide(target_strand[i]);
+                        cout << " is added to the target strand" << endl;
+                    }
+                    mutations += "i";
 
             } else { // substitution
-                cout << EscapeColors::colorString("Substitution", EscapeColors::YELLOW)
-                     << " at position " << i + 1 << ": " << (i <= 9 ? " " : "");
-                printNeucleotide(input_strand[i]); 
-                cout << " -> ";
-                printNeucleotide(target_strand[i]); 
-                cout << endl;
+                if (print) {
+                    cout << EscapeColors::colorString("Substitution", EscapeColors::YELLOW)
+                        << " at position " << i + 1 << ": " << (i <= 9 ? " " : "");
+                    printNeucleotide(input_strand[i]); 
+                    cout << " -> ";
+                    printNeucleotide(target_strand[i]); 
+                    cout << endl;
+                }
+                mutations += "s";
             }
         }
     }
 
-    cout << endl;
+    if (print) {
+        cout << endl;
+    }
+
+    return mutations;
 }
 
 string DNA::makeInputStrand() {
@@ -122,26 +152,14 @@ void DNA::printNeucleotide(char c) {
 }
 
 void DNA::printStrand(string strand) {
-    for (int i = 0; i < strand.size(); i++) {
-        printNeucleotide(strand[i]);
-        cout << " ";
-    }
+    printStrand(strand, " ");
 }
 
-int DNA::bestStrandMatch(string input_strand, string target_strand) {
-    double best = strandSimilarity(input_strand.substr(0, target_strand.size()), target_strand);;
-    int best_index = 0;
-
-    double similarity;
-    for (int i = 1; i <= input_strand.size() - target_strand.size(); i++) {
-        similarity = strandSimilarity(input_strand.substr(i, target_strand.size()), target_strand);
-        if (similarity > best) {
-            best = similarity;
-            best_index = i;
-        }
+void DNA::printStrand(string strand, string spacing) {
+    for (int i = 0; i < strand.size(); i++) {
+        printNeucleotide(strand[i]);
+        cout << spacing;
     }
-
-    return best_index;
 }
 
 void DNA::fillInTargetStrand(string input_strand, string& target_strand) {

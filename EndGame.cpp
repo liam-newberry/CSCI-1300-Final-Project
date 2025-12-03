@@ -31,7 +31,7 @@ void EndGame::configureDiscoveryPoints(Player& player) {
     int total = 0;
     total += player.character.getAccuracy();
     total += player.character.getEfficiency();
-    total += player.character.getExperience();
+    total += (player.character.getExperience() * 100); // experience is more valuable because the number is low
     total += player.character.getInsight();
 
     total -= total % 100;

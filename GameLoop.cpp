@@ -155,7 +155,7 @@ void GameLoop::reviewPosition() {
     Player& player = getCurrentPlayer();
 
     cout << player.name << " is at tile " 
-         << EscapeColors::colorString(board.getPlayerPosition(turn), EscapeColors::BLUE)
+         << EscapeColors::colorString(board.getPlayerPosition(turn) + 1, EscapeColors::BLUE)
          << "." << endl << endl;
 }
 
@@ -379,14 +379,7 @@ void GameLoop::rolledBrown() {
     cin >> input;
     cout << endl;
 
-    string strand2 = "";
-    for (int i = 0; i < input.size(); i++) {
-        if (input[i] != ' ') {
-            strand2 += input[i];
-        }
-    }
-
-    if (DNA::transcribeDNAtoRNA(strand1) == strand2) {
+    if (DNA::transcribeDNAtoRNA(strand1) == input) {
         cout << EscapeColors::colorString("Correct! +2000 Discovery Points", EscapeColors::GREEN)
              << endl << endl;
         getCurrentPlayer().character.changeDiscoveryPoints(2000); 
@@ -402,7 +395,53 @@ void GameLoop::rolledBrown() {
 }
 
 void GameLoop::rolledRed() {
+    cout << "Identify the following mutations in the following sequence" << endl
+         << "Use " 
+         << EscapeColors::colorString("i", EscapeColors::BLUE) << " for insertion, "
+         << EscapeColors::colorString("s", EscapeColors::YELLOW) << " for substitution, and "
+         << EscapeColors::colorString("d", EscapeColors::RED) 
+         << " for deletion to represent the mutations in order" << endl
+         << "Example: dsssi" << endl << endl;
+    
+    string strand1 = DNA::makeInputStrand();
+    string strand2 = strand1;
+    while (DNA::strandSimilarity(strand1, strand2) == 1) {
+        strand2 = DNA::makeTargetStrand(strand1, true);
+    }
 
+    cout << "          ";
+    for (int i = 0; i < strand1.size(); i++) {
+        cout << i + 1 << (i < 9 ? "  " : " ");
+    }
+
+    cout << endl << "Strand A: ";
+    DNA::printStrand(strand1, "  ");
+
+    int spacing = DNA::bestStrandMatch(strand1, strand2);
+
+    cout << endl << "Strand B: ";
+    for (int i = 0; i < spacing; i++) {
+        cout << "   ";
+    }
+    DNA::printStrand(strand2, "  ");
+ 
+    string input;
+    cout << endl << endl << "What is the correct sequence of mutations?" << endl;
+    cin >> input;
+    cout << endl;
+
+    if (DNA::identifyMutations(strand1, strand2, false) == input) {
+        cout << EscapeColors::colorString("Correct! +5000 Discovery Points", EscapeColors::GREEN)
+             << endl << endl;
+        getCurrentPlayer().character.changeDiscoveryPoints(5000); 
+    } else {
+        cout << "The answer is: " << endl << endl;
+        DNA::identifyMutations(strand1, strand2, true);
+
+        cout << EscapeColors::colorString("Incorrect! -2500 Discovery Points", EscapeColors::RED)
+             << endl << endl;
+        getCurrentPlayer().character.changeDiscoveryPoints(-2500);
+    }
 }
 
 void GameLoop::rolledPurple() {
